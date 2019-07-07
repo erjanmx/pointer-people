@@ -15,5 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('login/linkedin', 'Auth\LoginController@redirectToProvider');
+Route::get('login/linkedin', 'Auth\LoginController@redirectToProvider')->name('sign-in');
 Route::get('login/linkedin/callback', 'Auth\LoginController@handleProviderCallback');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
