@@ -11,9 +11,6 @@
 |
 */
 
-use App\User;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Route;
 
 Route::get('login/linkedin', 'Auth\LoginController@redirectToProvider')->name('sign-in');
@@ -24,6 +21,4 @@ Route::post('delete-logout', 'Auth\LoginController@deleteAndLogout')->name('dele
 
 Route::get('/', 'HomeController@index')->name('home');
 
-Route::get('/user', function () {
-    return UserResource::collection(User::all());
-});
+Route::get('/user', 'UserController@list');
