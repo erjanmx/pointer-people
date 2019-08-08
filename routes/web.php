@@ -16,11 +16,10 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Route;
 
-Auth::routes();
-
 Route::get('login/linkedin', 'Auth\LoginController@redirectToProvider')->name('sign-in');
 Route::get('login/linkedin/callback', 'Auth\LoginController@handleProviderCallback');
 
+Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 Route::post('delete-logout', 'Auth\LoginController@deleteAndLogout')->name('delete-logout');
 
 Route::get('/', 'HomeController@index')->name('home');
