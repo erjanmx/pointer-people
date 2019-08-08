@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->nullable();
             $table->string('linkedin_id')->nullable();
-            $table->string('linkedin_token')->nullable();
+            $table->string('linkedin_token', 1024)->nullable();
             $table->string('avatar')->nullable();
             $table->rememberToken();
             $table->softDeletes();
