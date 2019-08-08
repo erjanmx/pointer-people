@@ -20,6 +20,8 @@ class CreateUsersTable extends Migration
             $table->string('linkedin_id');
             $table->string('linkedin_token');
             $table->string('avatar')->nullable();
+            $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

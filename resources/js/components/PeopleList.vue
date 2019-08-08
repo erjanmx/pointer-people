@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <transition-group name="list-complete" tag="p">
-      <div v-for="person in people" v-bind:key=person.id class="card list-complete-item">
+      <div v-for="person in people" v-bind:key=person.id class="card-item list-complete-item">
         <PersonDetails :person="person"/>
       </div>
     </transition-group>

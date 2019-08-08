@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\User;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -27,7 +28,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -46,7 +47,7 @@ class LoginController extends Controller
      */
     public function redirectToProvider()
     {
-        return Socialite::driver('linkedin  ')->redirect();
+        return Socialite::driver('linkedin')->redirect();
     }
 
     /**
@@ -56,19 +57,21 @@ class LoginController extends Controller
      */
     public function handleProviderCallback()
     {
-        $user = Socialite::driver('linkedin')->user();
+        $remoteUser = Socialite::driver('linkedin')->stateless()->user();
 
-        User::query()->updateOrCreate([
-            'linkedin_id' => $user->getId(),
+        /** @var User $user */
+        $user = User::query()->updateOrCreate([
+            'linkedin_id' => $remoteUser->getId(),
         ], [
-            'name' => $user->getName(),
-            'email' => $user->getEmail(),
-            'linkedin_id' => $user->getId(),
-            'linkedin_token' => $user->token,
-            'avatar' => data_get($user, 'avatar_original', $user->getAvatar()),
+            'name' => $remoteUser->getName(),
+            'email' => $remoteUser->getEmail(),
+            'linkedin_id' => $remoteUser->getId(),
+            'linkedin_token' => $remoteUser->token,
+            'avatar' => data_get($remoteUser, 'avatar_original', $remoteUser->getAvatar()),
         ]);
 
-        dump($user);
-        // $user->token;
+        Auth::login($user, true);
+
+        return redirect()->route('home');
     }
 }

@@ -1,6 +1,6 @@
 <template>
   <a class="wrap">
-    <img class="img" v-bind:src="getAvatarUrl(person)"/>
+    <img :alt="person.name" class="img" v-bind:src="getAvatarUrl(person)"/>
     <div class="description-layer">
       <span class="description">
         <div class="description-contact">{{ person.email | lowercase }}</div>
@@ -16,7 +16,7 @@
     props: ['person'],
     methods: {
         getAvatarUrl: function (person) {
-            return 'https://api.adorable.io/avatars/285/' + person.id + '.png';
+            return person.avatar || 'https://api.adorable.io/avatars/285/' + person.id + '.png';
         }
     },
     filters: {

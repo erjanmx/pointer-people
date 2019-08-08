@@ -1,20 +1,5 @@
 /* relevant styles */
 
-html, body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  margin-top: 16px;
-  margin-bottom: 16px;
-
-  background-color: #319bd1;
-  //background-image: url(https://revlect.com/bundles/pointerrevlectsecurity/images/world-background.png);
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-
 div#app {
   display: flex;
   align-items: center;
@@ -58,10 +43,9 @@ div#app {
   .wrapper {
     display: flex;
     flex-wrap: wrap;
-    //padding-top: 20px;
   }
 
-  .card {
+  .card-item {
     box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px;
     max-width: 250px;
     margin: 5px;
@@ -206,7 +190,6 @@ p {
 }
 
 .info {
-  color: #fff;
   text-align: center;
   margin-top: 5px;
 }

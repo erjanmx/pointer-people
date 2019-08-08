@@ -60,16 +60,17 @@ export default {
           row.id,
           row.name,
           row.email,
+          row.avatar,
         )
       );
       this.loading = false;
     },
     fetchPeople() {
-      axios.get('/accounts/list')
+      axios.get('/user')
         .then((response)  =>  {
-          this.loadData(response.data)
+          this.loadData(response.data.data)
         }, (error)  =>  {
-          this.loadData(fakeData)
+          this.loadData(fakeData.data)
         })
     },
   },
@@ -79,6 +80,6 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
   @import './assets/app';
 </style>
