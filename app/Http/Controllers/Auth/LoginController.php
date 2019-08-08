@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use Exception;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
@@ -37,13 +41,13 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+//        $this->middleware('guest')->except('logout');
     }
 
     /**
      * Redirect the user to the GitHub authentication page.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function redirectToProvider()
     {
@@ -53,7 +57,7 @@ class LoginController extends Controller
     /**
      * Obtain the user information from GitHub.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function handleProviderCallback()
     {
@@ -71,6 +75,21 @@ class LoginController extends Controller
         ]);
 
         Auth::login($user, true);
+
+        return redirect()->route('home');
+    }
+
+    /**
+     * @return RedirectResponse
+     * @throws Exception
+     */
+    public function deleteAndLogout()
+    {
+        $user = User::query()->find(Auth::user()->id);
+
+        Auth::logout();
+
+        $user->delete();
 
         return redirect()->route('home');
     }
