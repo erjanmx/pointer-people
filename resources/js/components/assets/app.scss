@@ -1,4 +1,7 @@
 /* relevant styles */
+body {
+    overflow-y: hidden;
+}
 
 div#app {
   display: flex;
@@ -52,7 +55,7 @@ div#app {
     transition: .15s all ease-in-out;
     background: white;
     &:hover {
-      transform: scale(1.1);
+      //transform: scale(1.1);
     }
     a {
       text-decoration: none;
@@ -160,7 +163,7 @@ p {
   justify-content: center;
   align-items: center;
   overflow: auto;
-  max-height: 85vh;
+  max-height: 75vh;
 }
 
 .online {

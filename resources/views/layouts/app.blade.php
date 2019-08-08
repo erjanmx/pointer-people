@@ -20,7 +20,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div id="app1">
+    <div id="application">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
@@ -41,7 +41,7 @@
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('sign-in') }}">{{ __('Sign in with LinkedIn to join this list') }}</a>
+                                <a class="nav-link" href="{{ route('sign-in') }}">{{ __('Sign in with LinkedIn') }}</a>
                             </li>
                         @else
                             <li class="nav-item dropdown">
