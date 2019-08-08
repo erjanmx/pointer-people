@@ -11,9 +11,20 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+use App\User;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Route;
 
-Route::get('login/linkedin', 'Auth\LoginController@redirectToProvider');
+Auth::routes();
+
+Route::get('login/linkedin', 'Auth\LoginController@redirectToProvider')->name('sign-in');
 Route::get('login/linkedin/callback', 'Auth\LoginController@handleProviderCallback');
+
+Route::post('delete-logout', 'Auth\LoginController@deleteAndLogout')->name('delete-logout');
+
+Route::get('/', 'HomeController@index')->name('home');
+
+Route::get('/user', function () {
+    return UserResource::collection(User::all());
+});

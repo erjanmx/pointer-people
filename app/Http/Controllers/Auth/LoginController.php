@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\User;
+use Exception;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -27,48 +32,57 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
-    }
+    protected $redirectTo = '/';
 
     /**
      * Redirect the user to the GitHub authentication page.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function redirectToProvider()
     {
-        return Socialite::driver('linkedin  ')->redirect();
+        return Socialite::driver('linkedin')->redirect();
     }
 
     /**
      * Obtain the user information from GitHub.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function handleProviderCallback()
     {
-        $user = Socialite::driver('linkedin')->user();
+        $remoteUser = Socialite::driver('linkedin')->stateless()->user();
 
-        User::query()->updateOrCreate([
-            'linkedin_id' => $user->getId(),
+        /** @var User $user */
+        $user = User::withTrashed()->updateOrCreate([
+            'linkedin_id' => $remoteUser->getId(),
         ], [
-            'name' => $user->getName(),
-            'email' => $user->getEmail(),
-            'linkedin_id' => $user->getId(),
-            'linkedin_token' => $user->token,
-            'avatar' => data_get($user, 'avatar_original', $user->getAvatar()),
+            'name' => $remoteUser->getName(),
+            'email' => $remoteUser->getEmail(),
+            'linkedin_id' => $remoteUser->getId(),
+            'linkedin_token' => $remoteUser->token,
+            'avatar' => data_get($remoteUser, 'avatar_original', $remoteUser->getAvatar()),
         ]);
 
-        dump($user);
-        // $user->token;
+        $user->restore();
+
+        Auth::login($user, true);
+
+        return redirect()->route('home');
+    }
+
+    /**
+     * @return RedirectResponse
+     * @throws Exception
+     */
+    public function deleteAndLogout()
+    {
+        $user = User::query()->find(Auth::user()->id);
+
+        Auth::logout();
+
+        $user->delete();
+
+        return redirect()->route('home');
     }
 }
