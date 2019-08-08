@@ -25,6 +25,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
+        'linkedin_id', 'linkedin_token', 'remember_token', 'deleted_at',
     ];
 
     /**
