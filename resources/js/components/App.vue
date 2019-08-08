@@ -59,7 +59,7 @@ export default {
         new Person(
           row.id,
           row.name,
-          row.email,
+          row.email || '',
           row.avatar,
         )
       );

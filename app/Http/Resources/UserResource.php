@@ -29,7 +29,7 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'avatar' => $this->avatar,
-            'email' => Auth::check() ? $this->email : '',
+            'email' => Auth::check() ? $this->email : null,
         ];
     }
 }
