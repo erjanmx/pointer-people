@@ -55,8 +55,16 @@
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
+                                    <a class="dropdown-item" href="{{ route('delete-logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('delete-logout-form').submit();">
+                                        {{ __('Delete my user and logout') }}
+                                    </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                    <form id="delete-logout-form" action="{{ route('delete-logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
                                 </div>
