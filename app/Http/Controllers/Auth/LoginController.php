@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Laravel\Socialite\Facades\Socialite;
+use GuzzleHttp\Exception\ClientException;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -51,28 +52,38 @@ class LoginController extends Controller
      */
     public function handleProviderCallback()
     {
-        $remoteUser = Socialite::driver('linkedin')->stateless()->user();
+        $status = 'Logged in successfully';
 
-        /** @var User $user */
-        $user = User::withTrashed()->updateOrCreate([
-            'linkedin_id' => $remoteUser->getId(),
-        ], [
-            'name' => $remoteUser->getName(),
-            'email' => $remoteUser->getEmail(),
-            'linkedin_id' => $remoteUser->getId(),
-            'linkedin_token' => $remoteUser->token,
-            'avatar' => data_get($remoteUser, 'avatar_original', $remoteUser->getAvatar()),
-        ]);
+        try {
+            $remoteUser = Socialite::driver('linkedin')->stateless()->user();
 
-        $user->restore();
+            /** @var User $user */
+            $user = User::withTrashed()->updateOrCreate([
+                'linkedin_id' => $remoteUser->getId(),
+            ], [
+                'name' => $remoteUser->getName(),
+                'email' => $remoteUser->getEmail(),
+                'linkedin_id' => $remoteUser->getId(),
+                'linkedin_token' => $remoteUser->token,
+                'avatar' => data_get($remoteUser, 'avatar_original', $remoteUser->getAvatar()),
+            ]);
 
-        Auth::login($user, true);
+            $user->restore();
 
-        if ($user->wasRecentlyCreated) {
-            Log::info('New user', $user->toArray());
+            Auth::login($user, true);
+
+            if ($user->wasRecentlyCreated) {
+                $status = 'Your user has been added to this list';
+
+                Log::info('New user', $user->toArray());
+            }
+        } catch (ClientException $exception) {
+            $status = 'Login canceled';
+        } catch (Exception $exception) {
+            $status = 'Unable to do the sign in';
         }
 
-        return redirect()->route('home');
+        return redirect()->route('home')->with('status', $status);
     }
 
     /**
