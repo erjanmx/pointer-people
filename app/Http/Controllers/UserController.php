@@ -9,12 +9,14 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 class UserController extends Controller
 {
     /**
-     * Show the application dashboard.
+     * Show the list of users.
      *
      * @return AnonymousResourceCollection
      */
     public function list()
     {
-        return UserResource::collection(User::all());
+        return UserResource::collection(
+            User::query()->orderBy('name')->get()
+        );
     }
 }
