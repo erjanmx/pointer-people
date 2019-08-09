@@ -98,6 +98,6 @@ class LoginController extends Controller
 
         $user->delete();
 
-        return redirect()->route('home');
+        return redirect()->route('home')->with('status', 'Your account has been removed');
     }
 }
