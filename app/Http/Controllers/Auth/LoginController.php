@@ -68,7 +68,9 @@ class LoginController extends Controller
 
         Auth::login($user, true);
 
-        Log::info('New user', $user->toArray());
+        if ($user->wasRecentlyCreated) {
+            Log::info('New user', $user->toArray());
+        }
 
         return redirect()->route('home');
     }
