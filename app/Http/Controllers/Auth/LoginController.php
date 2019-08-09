@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use Exception;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -67,6 +67,8 @@ class LoginController extends Controller
         $user->restore();
 
         Auth::login($user, true);
+
+        Log::info('New user', $user->toArray());
 
         return redirect()->route('home');
     }

@@ -36,7 +36,7 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['daily'],
+            'channels' => ['daily', 'telegram'],
             'ignore_exceptions' => false,
         ],
 
@@ -89,6 +89,12 @@ return [
             'driver' => 'errorlog',
             'level' => 'debug',
         ],
+
+        'telegram' => [
+            'driver' => 'custom',
+            'via'    => Logger\TelegramLogger::class,
+            'level'  => 'debug',
+        ]
     ],
 
 ];
