@@ -22,3 +22,4 @@ Route::post('delete-logout', 'Auth\LoginController@deleteAndLogout')->name('dele
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('/user', 'UserController@list');
+Route::get('/account', 'AccountController@showForm');
