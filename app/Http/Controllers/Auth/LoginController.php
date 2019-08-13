@@ -52,6 +52,7 @@ class LoginController extends Controller
      */
     public function handleProviderCallback()
     {
+        $route = 'home';
         $status = 'Logged in successfully';
 
         try {
@@ -62,18 +63,20 @@ class LoginController extends Controller
                 'linkedin_id' => $remoteUser->getId(),
             ], [
                 'name' => $remoteUser->getName(),
-                'email' => $remoteUser->getEmail(),
                 'linkedin_id' => $remoteUser->getId(),
                 'linkedin_token' => $remoteUser->token,
                 'avatar' => data_get($remoteUser, 'avatar_original', $remoteUser->getAvatar()),
             ]);
 
+            $recentlyCreated = $user->wasRecentlyCreated || $user->trashed();
+
             $user->restore();
 
             Auth::login($user, true);
 
-            if ($user->wasRecentlyCreated) {
-                $status = 'Your user has been added to this list';
+            if ($recentlyCreated) {
+                $route = 'account';
+                $status = 'Your user has been added to the list, please provide some more information about yourself';
 
                 Log::info('New user', $user->toArray());
             }
@@ -83,7 +86,7 @@ class LoginController extends Controller
             $status = 'Unable to do the sign in';
         }
 
-        return redirect()->route('home')->with('status', $status);
+        return redirect()->route($route)->with('status', $status);
     }
 
     /**
@@ -95,6 +98,14 @@ class LoginController extends Controller
         $user = User::query()->find(Auth::user()->id);
 
         Auth::logout();
+
+        $user->update([
+            'bio' => null,
+            'email' => null,
+            'country' => null,
+            'job_title' => null,
+            'team_name' => null,
+        ]);
 
         $user->delete();
 

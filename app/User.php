@@ -17,6 +17,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name', 'email', 'linkedin_id', 'linkedin_token', 'avatar',
+        'job_title', 'team_name', 'country', 'bio',
     ];
 
     /**

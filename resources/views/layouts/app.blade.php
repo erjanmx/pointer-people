@@ -50,23 +50,18 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('account') }}">
+                                        {{ __('Account') }}
+                                    </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('delete-logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('delete-logout-form').submit();">
-                                        {{ __('Delete my user and logout') }}
-                                    </a>
-
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
-                                    <form id="delete-logout-form" action="{{ route('delete-logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
+
                                 </div>
                             </li>
                         @endguest
@@ -76,6 +71,15 @@
         </nav>
 
         <main class="py-4">
+            @if (session('status'))
+                <div class="alert alert-info alert-dismissible">
+                    {{ session('status') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
             @yield('content')
         </main>
     </div>

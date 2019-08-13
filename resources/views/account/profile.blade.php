@@ -5,65 +5,83 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+                <div class="card-header">{{ __('User profile') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('save-profile') }}">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    <form method="POST" action="{{ route('account.update') }}">
                         @csrf
 
                         <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Pointer E-Mail Address') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                {{ Form::text('email', $user->email, ['class' => 'form-control']) }}
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+                            <label for="team_name" class="col-md-4 col-form-label text-md-right">{{ __('Team') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                {{ Form::select('team_name', $teamNames, $user->team_name ?? old('team_name'), ['placeholder' => 'Select your team', 'class' => 'form-control']) }}
+                           </div>
+                        </div>
 
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                        <div class="form-group row">
+                            <label for="job_title" class="col-md-4 col-form-label text-md-right">{{ __('Job title') }}</label>
+
+                            <div class="col-md-6">
+                                <input type="text" class="awesomplete form-control" name="job_title" value="{{ $user->job_title ?? old('job_title') }}"
+                                       data-list="{{ join(',', $jobTitles) }}" />
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                </div>
+                            <label for="country" class="col-md-4 col-form-label text-md-right">{{ __('Country of origin') }}</label>
+                            <div class="col-md-6">
+                                {{ Form::select('country', $countries, $user->country ?? old('country'), ['placeholder' => 'Select country', 'class' => 'form-control']) }}
                             </div>
                         </div>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
+                        <div class="form-group row">
+                            <label for="bio" class="col-md-4 col-form-label text-md-right">{{ __('Bio') }}</label>
+
+                            <div class="col-md-6">
+                                {{ Form::textarea('bio', $user->bio, ['class' => 'form-control', 'rows' => '2', 'maxlength' => '120', 'placeholder' => 'Tell us something about yourself']) }}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-6 offset-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
+                                    {{ __('Save') }}
                                 </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
                             </div>
                         </div>
+                    </form>
+
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <button class="btn btn-danger" href="{{ route('delete-logout') }}"
+                                    onclick="if (confirm('Are you sure you want to remove your account?'))
+                                                 document.getElementById('delete-logout-form').submit(); ">
+                                {{ __('Delete my account') }}
+                            </button>
+                        </div>
+                    </div>
+
+                    <form id="delete-logout-form" action="{{ route('delete-logout') }}" method="POST" style="display: none;">
+                        @csrf
                     </form>
                 </div>
             </div>
