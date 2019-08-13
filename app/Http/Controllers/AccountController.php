@@ -78,7 +78,7 @@ class AccountController extends Controller
     {
         $countries = collect(json_decode(
             file_get_contents(
-                storage_path('app/data/countries.json')
+                resource_path('data/countries.json')
             )
         ));
 

@@ -1,6 +1,6 @@
 'use strict';
 
-const countries = require('../../storage/app/data/countries');
+const countries = require('../data/countries');
 
 module.exports = class Person {
     constructor(id, name, avatar, email, bio, team, position, countryCode) {

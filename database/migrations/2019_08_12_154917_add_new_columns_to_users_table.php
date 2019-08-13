@@ -14,8 +14,8 @@ class AddNewColumnsToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('job_title', 'team_name')->after('remember_token')->nullable();
-            $table->string('team_name', 'country')->after('job_title')->nullable();
+            $table->string('job_title')->after('remember_token')->nullable();
+            $table->string('team_name')->after('job_title')->nullable();
             $table->string('country', '3')->after('team_name')->nullable();
             $table->text('bio')->after('country')->nullable();
         });
