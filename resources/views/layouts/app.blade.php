@@ -41,7 +41,7 @@
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('sign-in') }}">{{ __('Sign in with LinkedIn to add yourself to the list') }}</a>
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Sign in with LinkedIn to add yourself to the list') }}</a>
                             </li>
                         @else
                             <li class="nav-item dropdown">

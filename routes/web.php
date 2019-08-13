@@ -13,7 +13,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('login/linkedin', 'Auth\LoginController@redirectToProvider')->name('sign-in');
+Route::get('login/linkedin', 'Auth\LoginController@redirectToProvider')->name('login');
 Route::get('login/linkedin/callback', 'Auth\LoginController@handleProviderCallback');
 
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
