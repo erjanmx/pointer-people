@@ -62,7 +62,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <div class="col-md-6 offset-4">
+                            <div class="col-md-4 col-sm-4 col-xs-4">
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Save') }}
                                 </button>
