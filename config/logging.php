@@ -36,8 +36,7 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['daily'],
-//            'channels' => ['daily', 'telegram'],
+            'channels' => ['daily', 'telegram'],
             'ignore_exceptions' => false,
         ],
 
