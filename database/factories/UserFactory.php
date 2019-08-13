@@ -20,5 +20,9 @@ $factory->define(User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
+        'job_title' => $faker->text(30),
+        'team_name' => $faker->text(30),
+        'country' => $faker->countryCode,
+        'bio' => $faker->text(120),
     ];
 });

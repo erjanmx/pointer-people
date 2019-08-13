@@ -43,7 +43,10 @@ export default {
         let searchText = this.searchText.toLowerCase();
 
         return person.name.toLowerCase().includes(searchText) ||
-          person.email.toLowerCase().includes(searchText);
+          person.email.toLowerCase().includes(searchText) ||
+          person.team.toLowerCase().includes(searchText) ||
+          person.position.toLowerCase().includes(searchText) ||
+          person.country.name.toLowerCase().includes(searchText);
       })
     }
   },
@@ -59,8 +62,12 @@ export default {
         new Person(
           row.id,
           row.name,
-          row.email || '',
           row.avatar,
+          row.email,
+          row.bio,
+          row.team,
+          row.position,
+          row.countryCode,
         )
       );
       this.loading = false;

@@ -25,11 +25,17 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
+        $authorized = Auth::check();
+
         return [
             'id' => $this->id,
             'name' => $this->name,
             'avatar' => $this->avatar,
-            'email' => Auth::check() ? $this->email : null,
+            'bio' => $authorized ? $this->bio : null,
+            'email' => $authorized ? $this->email : null,
+            'team' => $authorized ? $this->team_name : null,
+            'position' => $authorized ? $this->job_title : null,
+            'countryCode' => $authorized ? $this->country : null,
         ];
     }
 }
