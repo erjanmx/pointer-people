@@ -99,7 +99,7 @@ class ProfileController extends Controller
         })->sort();
 
         return [
-            'countries' => $countries->toArray(),
+            'countries' => $countries->sort()->toArray(),
             'jobTitles' => $jobTitles,
             'teamNames' => $teamNames->toArray(),
         ];
