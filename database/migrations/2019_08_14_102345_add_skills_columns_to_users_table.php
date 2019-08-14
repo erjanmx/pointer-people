@@ -14,7 +14,7 @@ class AddSkillsColumnsToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->json('skills')->after('bio')->nullable();
+            $table->text('skills')->after('bio')->nullable();
         });
     }
 
