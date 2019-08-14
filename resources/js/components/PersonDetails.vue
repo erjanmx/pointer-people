@@ -10,6 +10,8 @@
             <div class="description-contact">{{ person.email | lowercase }}</div>
             <hr/>
             <div class="description-about">{{ person.bio }}</div>
+            <hr/>
+            <div class="description-skills">{{ getPersonSkills(person) }}</div>
         </span>
     </div>
 
@@ -25,7 +27,10 @@
     methods: {
         getAvatarUrl: function (person) {
             return person.avatar || 'https://api.adorable.io/avatars/285/' + person.id + '.png';
-        }
+        },
+        getPersonSkills: function (person) {
+            return person.skills.length ? 'Top skills: ' + person.skills.join(', ') : '';
+        },
     },
     filters: {
       lowercase: function (value) {

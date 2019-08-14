@@ -17,7 +17,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name', 'email', 'linkedin_id', 'linkedin_token', 'avatar',
-        'job_title', 'team_name', 'country', 'bio',
+        'job_title', 'team_name', 'country', 'bio', 'skills',
     ];
 
     /**
@@ -35,5 +35,6 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
+        'skills' => 'array',
     ];
 }

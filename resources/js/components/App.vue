@@ -46,7 +46,8 @@ export default {
           person.email.toLowerCase().includes(searchText) ||
           person.team.toLowerCase().includes(searchText) ||
           person.position.toLowerCase().includes(searchText) ||
-          person.country.name.toLowerCase().includes(searchText);
+          person.country.name.toLowerCase().includes(searchText) ||
+          person.skills.join(' ').toLowerCase().includes(searchText);
       })
     }
   },
@@ -68,6 +69,7 @@ export default {
           row.team,
           row.position,
           row.countryCode,
+          row.skills,
         )
       );
       this.loading = false;

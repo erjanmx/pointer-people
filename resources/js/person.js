@@ -3,7 +3,7 @@
 const countries = require('../data/countries');
 
 module.exports = class Person {
-    constructor(id, name, avatar, email, bio, team, position, countryCode) {
+    constructor(id, name, avatar, email, bio, team, position, countryCode, skills) {
         this.country = {
             name: '',
             code: '',
@@ -17,6 +17,7 @@ module.exports = class Person {
 
         this.bio = bio || '';
         this.team = team || '';
+        this.skills = skills || [];
         this.position = position || '';
 
         if (countryCode) {

@@ -52,7 +52,7 @@
                         <div class="form-group row">
                             <label for="country" class="col-md-4 col-form-label text-md-right">{{ __('Country of origin') }}</label>
                             <div class="col-md-6">
-                                {{ Form::select('country', $countries, $user->country ?? old('country'), ['placeholder' => 'Select country', 'class' => 'form-control']) }}
+                                {{ Form::select('country', $countries, $user->country ?? old('country'), ['placeholder' => 'Select country', 'class' => 'form-control', 'id' => 'countries']) }}
                             </div>
                         </div>
 
@@ -61,6 +61,14 @@
 
                             <div class="col-md-6">
                                 {{ Form::textarea('bio', $user->bio, ['class' => 'form-control', 'rows' => '2', 'maxlength' => '120', 'placeholder' => 'Tell us something about yourself']) }}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="skills" class="col-md-4 col-form-label text-md-right">{{ __('Skills') }}</label>
+
+                            <div class="col-md-6">
+                                {{ Form::select('skills[]', $skills, $user->skills ?? old('skills'), ['class' => 'form-control', 'id' => 'user-skills', 'multiple' => 'multiple']) }}
                             </div>
                         </div>
 
@@ -92,3 +100,15 @@
     </div>
 </div>
 @endsection
+@push('scripts')
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#user-skills").select2({
+                placeholder: 'List your skills you want to share knowledge',
+                maximumSelectionLength: 5,
+                minimumInputLength: 1,
+                tags: true,
+            });
+        });
+    </script>
+@endpush

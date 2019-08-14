@@ -34,6 +34,7 @@ class UserResource extends JsonResource
             'bio' => $authorized ? $this->bio : null,
             'email' => $authorized ? $this->email : null,
             'team' => $authorized ? $this->team_name : null,
+            'skills' => $authorized ? $this->skills : null,
             'position' => $authorized ? $this->job_title : null,
             'countryCode' => $authorized ? $this->country : null,
         ];
