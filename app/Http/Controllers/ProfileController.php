@@ -38,7 +38,6 @@ class ProfileController extends Controller
      */
     public function update(Request $request)
     {
-//        dd($request->all());
         $request->validate([
             'bio' => 'max:120',
             'email' => ['max:40', 'regex:/^.+@pointerbp.(com|nl)$/'],
