@@ -75,7 +75,7 @@ class LoginController extends Controller
             Auth::login($user, true);
 
             if ($recentlyCreated) {
-                $route = 'account';
+                $route = 'profile';
                 $status = 'Your user has been added to the list, please provide some more information about yourself';
 
                 Log::info('New user', $user->toArray());
