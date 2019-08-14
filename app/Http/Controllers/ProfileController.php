@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -24,7 +25,7 @@ class ProfileController extends Controller
     {
         $collections = $this->getCollections();
 
-        $collections['user'] = $this->getCurrentUser();;
+        $collections['user'] = $this->getCurrentUser();
 
         return view('profile.form', $collections);
     }
@@ -43,13 +44,16 @@ class ProfileController extends Controller
             'country' => 'max:2',
             'job_title' => 'max:30',
             'team_name' => 'max:30',
+            'skills' => 'array|max:5',
         ]);
 
         $user = $this->getCurrentUser();
 
         $parameters = $request->only([
-            'email', 'job_title', 'team_name', 'bio', 'country',
+            'email', 'job_title', 'team_name', 'bio', 'country', 'skills',
         ]);
+
+        Arr::set($parameters, 'skills', Arr::get($parameters, 'skills', []));
 
         $user->update($parameters);
 
@@ -83,6 +87,7 @@ class ProfileController extends Controller
         ));
 
         $jobTitles = User::query()->pluck('job_title')->unique()->toArray();
+        $skillsCollection = User::query()->pluck('skills')->flatten()->unique()->filter();
 
         $teamNames = collect([
             'Sales',
@@ -98,7 +103,13 @@ class ProfileController extends Controller
             return [$name => $name];
         })->sort();
 
+        $skills = [];
+        foreach ($skillsCollection as $skill) {
+            $skills[strval($skill)] = $skill;
+        }
+
         return [
+            'skills' => $skills,
             'countries' => $countries->sort()->toArray(),
             'jobTitles' => $jobTitles,
             'teamNames' => $teamNames->toArray(),
