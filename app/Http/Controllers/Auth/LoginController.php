@@ -102,6 +102,7 @@ class LoginController extends Controller
         $user->update([
             'bio' => null,
             'email' => null,
+            'skills' => null,
             'country' => null,
             'job_title' => null,
             'team_name' => null,
