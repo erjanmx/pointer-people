@@ -31,12 +31,12 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'avatar' => $this->avatar,
-            'bio' => $authorized ? $this->bio : null,
+            'bio' => $this->bio,
             'email' => $authorized ? $this->email : null,
-            'team' => $authorized ? $this->team_name : null,
-            'skills' => $authorized ? $this->skills : null,
-            'position' => $authorized ? $this->job_title : null,
-            'countryCode' => $authorized ? $this->country : null,
+            'team' => $this->team_name,
+            'skills' => $this->skills,
+            'position' => $this->job_title,
+            'countryCode' => $this->country,
         ];
     }
 }
