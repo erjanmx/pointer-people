@@ -38,6 +38,7 @@ class ProfileController extends Controller
      */
     public function update(Request $request)
     {
+//        dd($request->all());
         $request->validate([
             'bio' => 'max:120',
             'email' => ['max:40', 'regex:/^.+@pointerbp.(com|nl)$/'],
@@ -54,6 +55,7 @@ class ProfileController extends Controller
         ]);
 
         Arr::set($parameters, 'skills', Arr::get($parameters, 'skills', []));
+        Arr::set($parameters, 'job_title', Arr::get($parameters, 'job_title'));
 
         $user->update($parameters);
 
@@ -86,7 +88,7 @@ class ProfileController extends Controller
             )
         ));
 
-        $jobTitles = User::query()->pluck('job_title')->unique()->toArray();
+        $jobTitles = User::query()->pluck('job_title')->unique();
         $skillsCollection = User::query()->pluck('skills')->flatten()->unique()->filter();
 
         $teamNames = collect([
@@ -103,6 +105,10 @@ class ProfileController extends Controller
             return [$name => $name];
         })->sort();
 
+        $jobTitles = $jobTitles->flatMap(function ($name) {
+            return [$name => $name];
+        })->sort();
+
         $skills = [];
         foreach ($skillsCollection as $skill) {
             $skills[strval($skill)] = $skill;
@@ -111,7 +117,7 @@ class ProfileController extends Controller
         return [
             'skills' => $skills,
             'countries' => $countries->sort()->toArray(),
-            'jobTitles' => $jobTitles,
+            'jobTitles' => $jobTitles->toArray(),
             'teamNames' => $teamNames->toArray(),
         ];
     }

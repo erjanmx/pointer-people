@@ -9,7 +9,6 @@ window._ = require('lodash');
 try {
     window.Popper = require('popper.js').default;
     window.$ = window.jQuery = require('jquery');
-    window.awesomplete = require('awesomplete');
     window.select2 = require('select2/dist/js/select2.full');
 
     require('bootstrap');

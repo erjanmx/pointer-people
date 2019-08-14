@@ -44,15 +44,14 @@
                             <label for="job_title" class="col-md-4 col-form-label text-md-right">{{ __('Job title') }}</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="awesomplete form-control" name="job_title" value="{{ $user->job_title ?? old('job_title') }}"
-                                       data-list="{{ join(',', $jobTitles) }}" />
+                                {{ Form::select('job_title', $jobTitles, $user->job_title ?? old('job_title'), ['class' => 'form-control', 'id' => 'user-job-title']) }}
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <label for="country" class="col-md-4 col-form-label text-md-right">{{ __('Country of origin') }}</label>
                             <div class="col-md-6">
-                                {{ Form::select('country', $countries, $user->country ?? old('country'), ['placeholder' => 'Select country', 'class' => 'form-control', 'id' => 'countries']) }}
+                                {{ Form::select('country', $countries, $user->country ?? old('country'), ['placeholder' => 'Select country', 'class' => 'form-control', 'id' => 'user-country']) }}
                             </div>
                         </div>
 
@@ -108,6 +107,18 @@
                 maximumSelectionLength: 5,
                 minimumInputLength: 1,
                 tags: true,
+            });
+
+            $("#user-job-title").select2({
+                placeholder: 'Job title',
+                allowClear: true,
+                minimumInputLength: 1,
+                tags: true,
+            });
+
+            $("#user-country").select2({
+                placeholder: 'Select country',
+                allowClear: true,
             });
         });
     </script>
