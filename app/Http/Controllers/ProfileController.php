@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
-class AccountController extends Controller
+class ProfileController extends Controller
 {
     public function __construct()
     {
@@ -26,7 +26,7 @@ class AccountController extends Controller
 
         $collections['user'] = $this->getCurrentUser();;
 
-        return view('account.profile', $collections);
+        return view('profile.form', $collections);
     }
 
     /**

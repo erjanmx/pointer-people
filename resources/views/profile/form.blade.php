@@ -9,16 +9,19 @@
 
                 <div class="card-body">
                     @if ($errors->any())
-                        <div class="alert alert-danger">
+                        <div class="alert alert-danger alert-dismissible">
                             <ul>
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
                                 @endforeach
                             </ul>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('account.update') }}">
+                    <form method="POST" action="{{ route('profile.update') }}">
                         @csrf
 
                         <div class="form-group row">

@@ -22,5 +22,6 @@ Route::post('delete-logout', 'Auth\LoginController@deleteAndLogout')->name('dele
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('/user', 'UserController@list');
-Route::get('/account', 'AccountController@showForm')->name('account');
-Route::post('/account/update', 'AccountController@update')->name('account.update');
+Route::get('/account', 'ProfileController@showForm')->name('account');
+Route::get('/profile', 'ProfileController@showForm')->name('profile');
+Route::post('/profile', 'ProfileController@update')->name('profile.update');
