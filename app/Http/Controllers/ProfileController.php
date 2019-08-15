@@ -13,20 +13,27 @@ use Illuminate\Database\Eloquent\Collection;
 
 class ProfileController extends Controller
 {
-    public function __construct()
+    /** @var \App\Collection */
+    protected $collections;
+
+    /**
+     * ProfileController constructor.
+     * @param \App\Collection $collections
+     */
+    public function __construct(\App\Collection $collections)
     {
         $this->middleware('auth');
+
+        $this->collections = $collections;
     }
 
     /**
-     *
+     * Show profile form
      */
     public function showForm()
     {
-        $collections = $this->getCollections();
-
         return view('profile.form', array_merge(
-            $collections,
+            $this->collections->getAll(),
             [ 'user' => $this->getCurrentUser() ]
         ));
     }
@@ -71,50 +78,5 @@ class ProfileController extends Controller
     protected function getCurrentUser()
     {
         return User::query()->findOrFail(Auth::user()->id);
-    }
-
-    /**
-     * Get list of collections
-     *
-     * ToDo retrieve it from db or other source
-     *
-     * @return array
-     */
-    protected function getCollections()
-    {
-        $countries = collect(json_decode(
-            file_get_contents(
-                resource_path('data/countries.json')
-            )
-        ))->sort()->toArray();
-
-        $jobTitlesCollection = User::query()->pluck('job_title')->unique();
-        $skillsCollection = User::query()->pluck('skills')->flatten()->unique()->filter();
-
-        $teamNamesCollection = collect([
-            'Sales',
-            'Finance',
-            'Marketing',
-            'Development',
-            'Investigations',
-            'Human Resources',
-            'Brand Protection',
-        ]);
-
-        $teamNames = $teamNamesCollection->flatMap(function ($name) {
-            return [$name => $name];
-        })->sort()->toArray();
-
-        $jobTitles = $jobTitlesCollection->flatMap(function ($name) {
-            return [$name => $name];
-        })->sort()->toArray();
-
-        // flatMap doesn't work here properly
-        $skills = [];
-        foreach ($skillsCollection as $skill) {
-            $skills[strval($skill)] = $skill;
-        }
-
-        return compact('skills', 'countries', 'jobTitles', 'teamNames');
     }
 }
