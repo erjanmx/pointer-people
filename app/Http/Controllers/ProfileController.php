@@ -25,9 +25,10 @@ class ProfileController extends Controller
     {
         $collections = $this->getCollections();
 
-        $collections['user'] = $this->getCurrentUser();
-
-        return view('profile.form', $collections);
+        return view('profile.form', array_merge(
+            $collections,
+            [ 'user' => $this->getCurrentUser() ]
+        ));
     }
 
     /**
@@ -85,12 +86,12 @@ class ProfileController extends Controller
             file_get_contents(
                 resource_path('data/countries.json')
             )
-        ));
+        ))->sort()->toArray();
 
-        $jobTitles = User::query()->pluck('job_title')->unique();
+        $jobTitlesCollection = User::query()->pluck('job_title')->unique();
         $skillsCollection = User::query()->pluck('skills')->flatten()->unique()->filter();
 
-        $teamNames = collect([
+        $teamNamesCollection = collect([
             'Sales',
             'Finance',
             'Marketing',
@@ -100,24 +101,20 @@ class ProfileController extends Controller
             'Brand Protection',
         ]);
 
-        $teamNames = $teamNames->flatMap(function ($name) {
+        $teamNames = $teamNamesCollection->flatMap(function ($name) {
             return [$name => $name];
-        })->sort();
+        })->sort()->toArray();
 
-        $jobTitles = $jobTitles->flatMap(function ($name) {
+        $jobTitles = $jobTitlesCollection->flatMap(function ($name) {
             return [$name => $name];
-        })->sort();
+        })->sort()->toArray();
 
+        // flatMap doesn't work here properly
         $skills = [];
         foreach ($skillsCollection as $skill) {
             $skills[strval($skill)] = $skill;
         }
 
-        return [
-            'skills' => $skills,
-            'countries' => $countries->sort()->toArray(),
-            'jobTitles' => $jobTitles->toArray(),
-            'teamNames' => $teamNames->toArray(),
-        ];
+        return compact('skills', 'countries', 'jobTitles', 'teamNames');
     }
 }
