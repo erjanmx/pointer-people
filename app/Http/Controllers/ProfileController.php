@@ -13,21 +13,29 @@ use Illuminate\Database\Eloquent\Collection;
 
 class ProfileController extends Controller
 {
-    public function __construct()
+    /** @var \App\Collection */
+    protected $collections;
+
+    /**
+     * ProfileController constructor.
+     * @param \App\Collection $collections
+     */
+    public function __construct(\App\Collection $collections)
     {
         $this->middleware('auth');
+
+        $this->collections = $collections;
     }
 
     /**
-     *
+     * Show profile form
      */
     public function showForm()
     {
-        $collections = $this->getCollections();
-
-        $collections['user'] = $this->getCurrentUser();
-
-        return view('profile.form', $collections);
+        return view('profile.form', array_merge(
+            $this->collections->getAll(),
+            [ 'user' => $this->getCurrentUser() ]
+        ));
     }
 
     /**
@@ -70,54 +78,5 @@ class ProfileController extends Controller
     protected function getCurrentUser()
     {
         return User::query()->findOrFail(Auth::user()->id);
-    }
-
-    /**
-     * Get list of collections
-     *
-     * ToDo retrieve it from db or other source
-     *
-     * @return array
-     */
-    protected function getCollections()
-    {
-        $countries = collect(json_decode(
-            file_get_contents(
-                resource_path('data/countries.json')
-            )
-        ));
-
-        $jobTitles = User::query()->pluck('job_title')->unique();
-        $skillsCollection = User::query()->pluck('skills')->flatten()->unique()->filter();
-
-        $teamNames = collect([
-            'Sales',
-            'Finance',
-            'Marketing',
-            'Development',
-            'Investigations',
-            'Human Resources',
-            'Brand Protection',
-        ]);
-
-        $teamNames = $teamNames->flatMap(function ($name) {
-            return [$name => $name];
-        })->sort();
-
-        $jobTitles = $jobTitles->flatMap(function ($name) {
-            return [$name => $name];
-        })->sort();
-
-        $skills = [];
-        foreach ($skillsCollection as $skill) {
-            $skills[strval($skill)] = $skill;
-        }
-
-        return [
-            'skills' => $skills,
-            'countries' => $countries->sort()->toArray(),
-            'jobTitles' => $jobTitles->toArray(),
-            'teamNames' => $teamNames->toArray(),
-        ];
     }
 }

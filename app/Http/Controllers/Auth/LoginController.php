@@ -63,7 +63,6 @@ class LoginController extends Controller
                 'linkedin_id' => $remoteUser->getId(),
             ], [
                 'name' => $remoteUser->getName(),
-                'linkedin_id' => $remoteUser->getId(),
                 'linkedin_token' => $remoteUser->token,
                 'avatar' => data_get($remoteUser, 'avatar_original', $remoteUser->getAvatar()),
             ]);
@@ -99,16 +98,7 @@ class LoginController extends Controller
 
         Auth::logout();
 
-        $user->update([
-            'bio' => null,
-            'email' => null,
-            'skills' => null,
-            'country' => null,
-            'job_title' => null,
-            'team_name' => null,
-        ]);
-
-        $user->delete();
+        $user->forceDelete();
 
         return redirect()->route('home')->with('status', 'Your account has been removed');
     }
