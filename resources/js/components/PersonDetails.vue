@@ -10,7 +10,7 @@
             <div class="description-contact">{{ person.email | lowercase }}</div>
             <hr/>
             <div class="description-about">{{ person.bio }}</div>
-            <hr/>
+            <hr v-show="getPersonSkills(person)" />
             <div class="description-skills">{{ getPersonSkills(person) }}</div>
         </span>
     </div>

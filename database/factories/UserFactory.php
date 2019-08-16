@@ -21,6 +21,8 @@ $factory->define(User::class, function (Faker $faker) {
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
         'job_title' => $faker->text(30),
+        'linkedin_id' => $faker->unique()->text(20),
+        'linkedin_token' => $faker->unique()->text(20),
         'team_name' => $faker->text(30),
         'country' => $faker->countryCode,
         'bio' => $faker->text(120),
