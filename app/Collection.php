@@ -20,9 +20,11 @@ class Collection
             'Finance',
             'Marketing',
             'Development',
+            'Internal IT',
             'Investigations',
             'Human Resources',
             'Brand Protection',
+            'Office Management',
         ]);
 
         $teamNames = $teamNamesCollection->flatMap(function ($name) {
