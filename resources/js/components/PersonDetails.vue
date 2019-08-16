@@ -8,10 +8,14 @@
             <div class="description-position">{{ person.team }}</div>
             <div class="description-position">{{ person.position }}</div>
             <div class="description-contact">{{ person.email | lowercase }}</div>
-            <hr/>
-            <div class="description-about">{{ person.bio }}</div>
-            <hr v-show="getPersonSkills(person)" />
-            <div class="description-skills">{{ getPersonSkills(person) }}</div>
+            <div v-show="person.bio" >
+                <hr/>
+                <div class="description-about">{{ person.bio }}</div>
+            </div>
+            <div v-show="person.skills.length" >
+                <hr />
+                <div class="description-skills">{{ getPersonSkills(person) }}</div>
+            </div>
         </span>
     </div>
 
