@@ -16,6 +16,9 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @stack('styles')
@@ -43,7 +46,7 @@
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Sign in with LinkedIn to add yourself to the list') }}</a>
+                                <a class="nav-link" title="We use only name and profile picture from LinkedIn, nothing more. You can anytime remove your account" href="{{ route('login') }}">{{ __('Sign in with LinkedIn to add yourself to the list') }}</a>
                             </li>
                         @else
                             <li class="nav-item dropdown">
