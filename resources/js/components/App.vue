@@ -29,9 +29,8 @@ export default {
   },
   mounted: function () {
     // set filter on load if provided
-    let name = this.$route.query.s;
-    if (name) {
-      this.searchText = name;
+    if (this.$route && this.$route.query.s) {
+      this.searchText = this.$route.query.s;
     }
   },
   created: function () {
