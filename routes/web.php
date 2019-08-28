@@ -13,7 +13,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['checkIp'])->group(function () {
+Route::middleware(['fw-only-whitelisted'])->group(function () {
     Route::get('login/linkedin', 'Auth\LoginController@redirectToProvider')->name('login');
     Route::get('login/linkedin/callback', 'Auth\LoginController@handleProviderCallback');
 
