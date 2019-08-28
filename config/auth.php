@@ -100,4 +100,6 @@ return [
         ],
     ],
 
+    'allowed_ips' => explode(',', env('ALLOWED_IPS', '*')),
+
 ];
