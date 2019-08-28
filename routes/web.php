@@ -13,15 +13,17 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('login/linkedin', 'Auth\LoginController@redirectToProvider')->name('login');
-Route::get('login/linkedin/callback', 'Auth\LoginController@handleProviderCallback');
+Route::middleware(['checkIp'])->group(function () {
+    Route::get('login/linkedin', 'Auth\LoginController@redirectToProvider')->name('login');
+    Route::get('login/linkedin/callback', 'Auth\LoginController@handleProviderCallback');
 
-Route::post('logout', 'Auth\LoginController@logout')->name('logout');
-Route::post('delete-logout', 'Auth\LoginController@deleteAndLogout')->name('delete-logout');
+    Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+    Route::post('delete-logout', 'Auth\LoginController@deleteAndLogout')->name('delete-logout');
 
-Route::get('/', 'HomeController@index')->name('home');
+    Route::get('/', 'HomeController@index')->name('home');
 
-Route::get('/user', 'UserController@list');
-Route::get('/account', 'ProfileController@showForm')->name('account');
-Route::get('/profile', 'ProfileController@showForm')->name('profile');
-Route::post('/profile', 'ProfileController@update')->name('profile.update');
+    Route::get('/user', 'UserController@list');
+    Route::get('/account', 'ProfileController@showForm')->name('account');
+    Route::get('/profile', 'ProfileController@showForm')->name('profile');
+    Route::post('/profile', 'ProfileController@update')->name('profile.update');
+});
