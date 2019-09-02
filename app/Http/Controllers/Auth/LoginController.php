@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Database\Eloquent\Model;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Database\Eloquent\Builder;
 use GuzzleHttp\Exception\ClientException;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -52,42 +54,45 @@ class LoginController extends Controller
      */
     public function handleProviderCallback()
     {
-        $route = 'home';
-        $status = 'Logged in successfully';
-
         try {
-            $remoteUser = Socialite::driver('linkedin')->stateless()->user();
-
-            /** @var User $user */
-            $user = User::withTrashed()->updateOrCreate([
-                'linkedin_id' => $remoteUser->getId(),
-            ], [
-                'name' => $remoteUser->getName(),
-                'linkedin_token' => $remoteUser->token,
-                'avatar' => data_get($remoteUser, 'avatar_original', $remoteUser->getAvatar()),
-            ]);
-
-            $recentlyCreated = $user->wasRecentlyCreated || $user->trashed();
-
-            $user->restore();
+            $user = $this->getUserWithLinkedIn();
 
             Auth::login($user, true);
 
-            if ($recentlyCreated) {
-                $route = 'profile';
-                $status = 'Your user has been added to the list, please provide some more information about yourself';
+            $status = __('Logged in successfully');
 
+            if ($user->wasRecentlyCreated) {
                 Log::info('New user', $user->toArray());
+
+                return redirect()->route('profile')->with('status', __('Your user has been added to the list, please provide some more information about yourself'));
             }
         } catch (ClientException $exception) {
-            $status = 'Login canceled';
+            $status = __('Login canceled');
         } catch (Exception $exception) {
-            $status = 'Unable to do the sign in';
+            Log::error($exception->getMessage());
+
+            $status = __('Unable to do the sign in');
         }
 
-        return redirect()->route($route)->with('status', $status);
+        return redirect()->route('home')->with('status', $status);
     }
 
+    /**
+     * @return User|Builder|Model|\Illuminate\Database\Query\Builder
+     */
+    public function getUserWithLinkedIn()
+    {
+        $remoteUser = Socialite::driver('linkedin')->stateless()->user();
+
+        /** @var User $user */
+        return User::withTrashed()->updateOrCreate([
+            'linkedin_id' => $remoteUser->getId(),
+        ], [
+            'name' => $remoteUser->getName(),
+            'linkedin_token' => $remoteUser->token,
+            'avatar' => data_get($remoteUser, 'avatar_original', $remoteUser->getAvatar()),
+        ]);
+    }
     /**
      * @return RedirectResponse
      * @throws Exception

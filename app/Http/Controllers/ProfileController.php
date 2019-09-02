@@ -46,28 +46,11 @@ class ProfileController extends Controller
      */
     public function update(Request $request)
     {
-        $request->validate([
-            'bio' => 'max:120',
-            'email' => ['max:40', 'regex:/^.+@pointerbp.(com|nl)$/'],
-            'country' => 'max:2',
-            'job_title' => 'max:30',
-            'team_name' => 'max:30',
-            'skills' => 'array|max:5',
-        ]);
+        $parameters = $this->getValidatedParameters($request);
 
-        $user = $this->getCurrentUser();
+        $this->getCurrentUser()->update($parameters);
 
-        $parameters = $request->only([
-            'email', 'job_title', 'team_name', 'bio', 'country', 'skills',
-        ]);
-
-        Arr::set($parameters, 'skills', Arr::get($parameters, 'skills', []));
-        Arr::set($parameters, 'job_title', Arr::get($parameters, 'job_title'));
-
-        $user->update($parameters);
-
-        return redirect()->route('account')
-            ->with('status', 'Updated successfully');
+        return redirect()->route('account')->with('status', 'Updated successfully');
     }
 
     /**
@@ -78,5 +61,32 @@ class ProfileController extends Controller
     protected function getCurrentUser()
     {
         return User::query()->findOrFail(Auth::user()->id);
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    protected function getValidatedParameters(Request $request)
+    {
+        $request->validate([
+            'bio' => 'max:120',
+            'email' => ['max:40', 'regex:/^.+@pointerbp.(com|nl)$/'],
+            'country' => 'max:2',
+            'job_title' => 'max:30',
+            'team_name' => 'max:30',
+            'skills' => 'array|max:5',
+        ]);
+
+        $parameters = $request->only([
+            'email', 'job_title', 'team_name', 'bio', 'country', 'skills',
+        ]);
+
+        // set default values if empty
+        // otherwise they will not be updated in eloquent model
+        Arr::set($parameters, 'skills', Arr::get($parameters, 'skills', []));
+        Arr::set($parameters, 'job_title', Arr::get($parameters, 'job_title'));
+
+        return $parameters;
     }
 }

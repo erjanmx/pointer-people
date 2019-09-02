@@ -30,5 +30,6 @@
         <server name="QUEUE_CONNECTION" value="sync"/>
         <server name="SESSION_DRIVER" value="array"/>
         <server name="DB_CONNECTION" value="sqlite_testing"/>
+        <server name="FIREWALL_ENABLED" value="false"/>
     </php>
 </phpunit>
