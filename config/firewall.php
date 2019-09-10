@@ -50,7 +50,7 @@ return [
         'whitelist' => [
             'code' => 403, // 200 = log && notify, but keep pages rendering
 
-            'message' => 'Application is accessible from Pointer office network only',
+            'message' => 'Application is accessible from Pointer network only (from the office or using VPN)',
 
             'view' => null,
 
