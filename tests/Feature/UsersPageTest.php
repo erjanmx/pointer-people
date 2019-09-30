@@ -15,7 +15,7 @@ class UsersPageTest extends TestCase
      */
     public function testInitialResponseEmpty()
     {
-        $response = $this->get('/user');
+        $response = $this->get('/users');
 
         $this->assertEquals('{"data":[]}', $response->content());
     }
@@ -39,7 +39,7 @@ class UsersPageTest extends TestCase
 
         User::query()->create($attributes);
 
-        $response = $this->get('/user');
+        $response = $this->get('/users');
 
         $response->assertJson([
             "data" => [
@@ -81,7 +81,7 @@ class UsersPageTest extends TestCase
 
         $user = User::query()->create($attributes);
 
-        $response = $this->actingAs($user)->get('/user');
+        $response = $this->actingAs($user)->get('/users');
 
         $response->assertJson([
             "data" => [

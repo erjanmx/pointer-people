@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\Http\Resources\UserResource;
+use App\Http\Resources\UsersResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class UserController extends Controller
@@ -15,7 +15,7 @@ class UserController extends Controller
      */
     public function list()
     {
-        return UserResource::collection(
+        return UsersResource::collection(
             User::query()->orderBy('name')->get()
         );
     }

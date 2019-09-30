@@ -22,7 +22,7 @@ Route::middleware(['fw-only-whitelisted'])->group(function () {
 
     Route::get('/', 'HomeController@index')->name('home');
 
-    Route::get('/user', 'UserController@list');
+    Route::get('/users', 'UserController@list');
     Route::get('/account', 'ProfileController@showForm')->name('account');
     Route::get('/profile', 'ProfileController@showForm')->name('profile');
     Route::post('/profile', 'ProfileController@update')->name('profile.update');

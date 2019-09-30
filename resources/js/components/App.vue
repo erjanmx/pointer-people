@@ -74,7 +74,7 @@ export default {
       this.loading = false;
     },
     fetchPeople() {
-      axios.get('/user')
+      axios.get('/users')
         .then((response)  =>  {
           this.loadData(response.data.data)
         }, (error)  =>  {
