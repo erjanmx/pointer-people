@@ -57,13 +57,21 @@ class ProfileController extends Controller
         }
 
         // handle email change
-        $user->update(['email_verified_at' => null]);
-        $user->sendEmailVerificationNotification();
+        $this->sendUserEmailVerificationNotification($user);
 
         return redirect()->route('account')->with(
             'status',
             'Updated successfully. Please check your email for a verification link.'
         );
+    }
+
+    private function sendUserEmailVerificationNotification(User $user)
+    {
+        // reset
+        $user->email_verified_at = null;
+        $user->save();
+
+        $user->sendEmailVerificationNotification();
     }
 
     /**
