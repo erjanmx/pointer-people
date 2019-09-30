@@ -17,15 +17,15 @@ class HomePageTest extends TestCase
     {
         $response = $this->get('/');
 
-        $response->assertOk();
+        $response->assertRedirect('intro');
     }
 
     /**
      * @return void
      */
-    public function testIndexPageHasLoginLink()
+    public function testIntroPageHasLoginLink()
     {
-        $response = $this->get('/');
+        $response = $this->get('/intro');
 
         $response->assertSeeText('Sign in with LinkedIn');
     }
@@ -45,7 +45,9 @@ class HomePageTest extends TestCase
      */
     public function testAuthenticatedUserCanSeeLogoutLink()
     {
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->create([
+            'email_verified_at' => now(),
+        ]);
 
         $response = $this->actingAs($user)->get('/');
 
@@ -57,7 +59,9 @@ class HomePageTest extends TestCase
      */
     public function testAuthenticatedUserCanSeeProfileLink()
     {
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->create([
+            'email_verified_at' => now(),
+        ]);
 
         $response = $this->actingAs($user)->get('/');
 

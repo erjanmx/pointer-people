@@ -46,17 +46,30 @@ class ProfileController extends Controller
      */
     public function update(Request $request)
     {
-        $parameters = $this->getValidatedParameters($request);
+        $user = $this->getCurrentUser();
 
-        $this->getCurrentUser()->update($parameters);
+        $previousEmail = $user->email;
 
-        return redirect()->route('account')->with('status', 'Updated successfully');
+        $user->update($this->getValidatedParameters($request));
+
+        if ($previousEmail == $user->email) {
+            return redirect()->route('account')->with('status', 'Updated successfully');
+        }
+
+        // handle email change
+        $user->update(['email_verified_at' => null]);
+        $user->sendEmailVerificationNotification();
+
+        return redirect()->route('account')->with(
+            'status',
+            'Updated successfully. Please check your email for a verification link.'
+        );
     }
 
     /**
      * Get current logged in user
      *
-     * @return Builder|Builder[]|Collection|Model
+     * @return Builder|User
      */
     protected function getCurrentUser()
     {

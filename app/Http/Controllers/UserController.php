@@ -3,11 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\Http\Resources\UserResource;
+use App\Http\Resources\UsersResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class UserController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware(['auth']);
+    }
+
     /**
      * Show the list of users.
      *
@@ -15,8 +25,8 @@ class UserController extends Controller
      */
     public function list()
     {
-        return UserResource::collection(
-            User::query()->orderBy('name')->get()
+        return UsersResource::collection(
+            User::query()->verified()->orderBy('name')->get()
         );
     }
 }

@@ -103,6 +103,8 @@ class LoginController extends Controller
 
         Auth::logout();
 
+        Log::info('User removed', $user->toArray());
+
         $user->forceDelete();
 
         return redirect()->route('home')->with('status', 'Your account has been removed');

@@ -46,7 +46,7 @@
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" title="We use only name and profile picture from LinkedIn, nothing more. You can anytime remove your account" href="{{ route('login') }}">{{ __('Sign in with LinkedIn to add yourself to the list') }}</a>
+                                <a class="nav-link" title="We use only name and profile picture from LinkedIn, nothing more. You can anytime remove your account" href="{{ route('login') }}">{{ __('Sign in with LinkedIn') }}</a>
                             </li>
                         @else
                             <li class="nav-item dropdown">
