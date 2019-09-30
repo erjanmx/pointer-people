@@ -6,6 +6,7 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="description" content="Pointer People is here to help you get a better overview of who your colleagues are" />
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
