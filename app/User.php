@@ -2,11 +2,13 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable, SoftDeletes;
 
@@ -37,4 +39,15 @@ class User extends Authenticatable
     protected $casts = [
         'skills' => 'array',
     ];
+
+    /**
+     * Scope a query to only verified users.
+     *
+     * @param  Builder  $query
+     * @return Builder
+     */
+    public function scopeVerified($query)
+    {
+        return $query->whereNotNull('email_verified_at');
+    }
 }

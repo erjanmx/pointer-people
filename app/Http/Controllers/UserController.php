@@ -9,6 +9,16 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 class UserController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware(['auth']);
+    }
+
+    /**
      * Show the list of users.
      *
      * @return AnonymousResourceCollection
@@ -16,7 +26,7 @@ class UserController extends Controller
     public function list()
     {
         return UsersResource::collection(
-            User::query()->orderBy('name')->get()
+            User::query()->verified()->orderBy('name')->get()
         );
     }
 }
