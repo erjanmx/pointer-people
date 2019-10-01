@@ -64,7 +64,7 @@ class LoginController extends Controller
             if ($user->wasRecentlyCreated) {
                 Log::info('New user', $user->toArray());
 
-                return redirect()->route('profile')->with('status', __('Your user has been added to the list, please provide some more information about yourself'));
+                return redirect()->route('profile')->with('status', __('Please provide your PointerBP email and some more information about yourself'));
             }
         } catch (ClientException $exception) {
             $status = __('Login canceled');
@@ -107,6 +107,6 @@ class LoginController extends Controller
 
         $user->forceDelete();
 
-        return redirect()->route('home')->with('status', 'Your account has been removed');
+        return redirect()->route('intro')->with('status', 'Your account has been removed');
     }
 }
