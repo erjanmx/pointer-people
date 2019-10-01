@@ -21,7 +21,7 @@ Route::middleware(['fw-only-whitelisted'])->group(function () {
     Route::post('delete-logout', 'Auth\LoginController@deleteAndLogout')->name('delete-logout');
 
     Route::get('/intro', 'HomeController@intro')->name('intro');
-    Route::middleware(['verified'])->group(function () {
+    Route::middleware(['with-email', 'verified'])->group(function () {
         Route::get('/', 'HomeController@index')->name('home')->middleware('auth');
         Route::get('/users', 'UserController@list');
     });

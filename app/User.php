@@ -50,4 +50,12 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $query->whereNotNull('email_verified_at');
     }
+
+    /**
+     * @return bool
+     */
+    public function hasEmail() : bool
+    {
+        return $this->email != null;
+    }
 }

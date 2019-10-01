@@ -64,6 +64,8 @@ class Kernel extends HttpKernel
         'fw-only-whitelisted' => \PragmaRX\Firewall\Middleware\FirewallWhitelist::class,
         'fw-block-blacklisted' => \PragmaRX\Firewall\Middleware\FirewallBlacklist::class,
         'fw-block-attacks' => \PragmaRX\Firewall\Middleware\BlockAttacks::class,
+
+        'with-email' => \App\Http\Middleware\CheckEmail::class,
     ];
 
     /**
