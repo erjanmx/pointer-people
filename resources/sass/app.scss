@@ -19,3 +19,9 @@
 .select2-selection__arrow {
     height: 34px !important;
 }
+
+.required:after {
+    content:'*';
+    color:red;
+    padding-left:1px;
+}
