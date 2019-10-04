@@ -92,6 +92,7 @@ class ProfileController extends Controller
     {
         $request->validate([
             'bio' => 'max:120',
+            'name' => ['required', 'string', 'max:255'],
             'email' => ['max:40', 'regex:/^.+@pointerbp.(com|nl)$/'],
             'country' => 'max:2',
             'job_title' => 'max:30',
@@ -100,7 +101,7 @@ class ProfileController extends Controller
         ]);
 
         $parameters = $request->only([
-            'email', 'job_title', 'team_name', 'bio', 'country', 'skills',
+            'name', 'email', 'job_title', 'team_name', 'bio', 'country', 'skills',
         ]);
 
         // set default values if empty

@@ -11,13 +11,15 @@
 |
 */
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['fw-only-whitelisted'])->group(function () {
-    Route::get('login/linkedin', 'Auth\LoginController@redirectToProvider')->name('login');
+    Auth::routes(['verify' => true]);
+
+    Route::get('login/linkedin', 'Auth\LoginController@redirectToProvider')->name('login-linkedin');
     Route::get('login/linkedin/callback', 'Auth\LoginController@handleProviderCallback');
 
-    Route::post('logout', 'Auth\LoginController@logout')->name('logout');
     Route::post('delete-logout', 'Auth\LoginController@deleteAndLogout')->name('delete-logout');
 
     Route::get('/intro', 'HomeController@intro')->name('intro');
@@ -28,8 +30,4 @@ Route::middleware(['fw-only-whitelisted'])->group(function () {
     Route::get('/account', 'ProfileController@showForm')->name('account');
     Route::get('/profile', 'ProfileController@showForm')->name('profile');
     Route::post('/profile', 'ProfileController@update')->name('profile.update');
-
-    Route::get('email/verify', 'Auth\VerificationController@show')->name('verification.notice');
-    Route::get('email/verify/{id}', 'Auth\VerificationController@verify')->name('verification.verify');
-    Route::get('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
 });
