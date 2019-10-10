@@ -21,7 +21,7 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('profile.update') }}">
+                    <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
                         @csrf
 
                         <div class="form-group row">
@@ -79,6 +79,26 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <label for="avatar" class="col-md-4 col-form-label text-md-right">{{ __('Avatar') }}</label>
+
+                            <div class="col-md-6">
+                                <input type="file" class="form-control" name="avatar" id="avatar">
+                            </div>
+                        </div>
+
+{{--                        <div class="row justify-content-center">--}}
+
+{{--                            <div class="profile-header-container">--}}
+{{--                                <div class="profile-header-img">--}}
+{{--                                    <img class="rounded-circle" src="/storage/avatars/{{ $user->avatar }}" />--}}
+{{--                                    <!-- badge -->--}}
+{{--                                    <div class="rank-label-container">--}}
+{{--                                        <span class="label label-default rank-label">{{$user->name}}</span>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                         <div class="form-group row">
                             <div class="col-md-4 col-sm-4 col-xs-4">
                                 <button type="submit" class="btn btn-primary">

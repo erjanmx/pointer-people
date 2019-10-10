@@ -30,11 +30,11 @@ class UsersResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'avatar' => $this->avatar,
             'bio' => $this->bio,
             'email' => $authorized ? $this->email : null,
             'team' => $this->team_name,
             'skills' => $this->skills,
+            'avatar' => url($this->avatar),
             'position' => $this->job_title,
             'countryCode' => $this->country,
         ];

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
 
 class ProfileController extends Controller
@@ -91,12 +93,16 @@ class ProfileController extends Controller
         $request->validate([
             'bio' => 'max:120',
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['max:40', 'regex:/^.+@pointerbp.(com|nl)$/'],
+            'email' => ['max:40', 'regex:/' . User::POINTER_EMAIL_REGEXP . '/'],
             'country' => 'max:2',
             'job_title' => 'max:30',
             'team_name' => 'max:30',
             'skills' => 'array|max:5',
+            'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:4096',
         ]);
+
+        $avatarName = Str::random() . '.' . request()->avatar->getClientOriginalExtension();
+        $request->avatar->storeAs('public', $avatarName);
 
         $parameters = $request->only([
             'name', 'email', 'job_title', 'team_name', 'bio', 'country', 'skills',
@@ -106,6 +112,7 @@ class ProfileController extends Controller
         // otherwise they will not be updated in eloquent model
         Arr::set($parameters, 'skills', Arr::get($parameters, 'skills', []));
         Arr::set($parameters, 'job_title', Arr::get($parameters, 'job_title'));
+        Arr::set($parameters, 'avatar', Storage::url($avatarName));
 
         return $parameters;
     }
