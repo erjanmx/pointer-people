@@ -69,6 +69,16 @@
                             </div>
                         </div>
                     </form>
+                    <hr>
+                    <div class="form-group row mb-0">
+                        <div class="col-md-8 offset-md-4">
+                            @if (Route::has('login-linkedin'))
+                                <a href="{{ route('login-linkedin') }}">
+                                    <img src="{{ asset('images/linkedin.png') }}" title="Sign in with LinkedIn" alt="Sign in with LinkedIn">
+                                </a>
+                            @endif
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
