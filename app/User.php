@@ -22,6 +22,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $fillable = [
         'name', 'email', 'linkedin_id', 'linkedin_token', 'avatar',
         'job_title', 'team_name', 'country', 'bio', 'skills', 'password',
+        'avatar_blob',
     ];
 
     /**
@@ -59,5 +60,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function hasEmail() : bool
     {
         return $this->email != null;
+    }
+
+    public function getAvatar()
+    {
+        if ($this->avatar_blob) {
+            return 'data:image/jpeg;base64,'.base64_encode($this->avatar_blob );
+        }
+
+        return $this->avatar;
     }
 }

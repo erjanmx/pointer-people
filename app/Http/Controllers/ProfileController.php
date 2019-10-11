@@ -98,7 +98,7 @@ class ProfileController extends Controller
             'job_title' => 'max:30',
             'team_name' => 'max:30',
             'skills' => 'array|max:5',
-            'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:4096',
+            'avatar' => 'image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         $parameters = $request->only([
@@ -106,10 +106,9 @@ class ProfileController extends Controller
         ]);
 
         if ($request->hasFile('avatar')) {
-            $avatarName = Str::random() . '.' . $request->avatar->extension();
-            $request->avatar->storeAs('public', $avatarName);
-
-            Arr::set($parameters, 'avatar', Storage::url($avatarName));
+            // Get the contents of the file because heroku doesnt allow storage
+            $contents = $request->avatar->openFile()->fread($request->avatar->getSize());
+            Arr::set($parameters, 'avatar_blob', $contents);
         }
 
         // set default values if empty

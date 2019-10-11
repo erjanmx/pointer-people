@@ -34,7 +34,7 @@ class UsersResource extends JsonResource
             'email' => $authorized ? $this->email : null,
             'team' => $this->team_name,
             'skills' => $this->skills,
-            'avatar' => $this->avatar ? url($this->avatar) : null,
+            'avatar' => $this->getAvatar(),
             'position' => $this->job_title,
             'countryCode' => $this->country,
         ];
