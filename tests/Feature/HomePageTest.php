@@ -27,7 +27,7 @@ class HomePageTest extends TestCase
     {
         $response = $this->get('/intro');
 
-        $response->assertSeeText('Sign in with LinkedIn');
+        $response->assertSeeText('Sign in');
     }
 
     /**

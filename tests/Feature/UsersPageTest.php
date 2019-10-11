@@ -20,7 +20,7 @@ class UsersPageTest extends TestCase
         $attributes = [
             'name' => 'John',
             'email' => 'a@a.a',
-            'avatar' => 'http//example.com/john.jpg',
+            'avatar' => 'http://example.com/john.jpg',
             'bio' => 'Bio',
             'country' => 'NL',
             'skills' => ['skill-1', 'skill-2'],
@@ -39,7 +39,7 @@ class UsersPageTest extends TestCase
                 [
                     "id" => 1,
                     "name" => "John",
-                    "avatar" => 'http//example.com/john.jpg',
+                    "avatar" => 'http://example.com/john.jpg',
                     "bio" => 'Bio',
                     "email" => 'a@a.a',
                     "team" => 'Team',
