@@ -101,18 +101,21 @@ class ProfileController extends Controller
             'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:4096',
         ]);
 
-        $avatarName = Str::random() . '.' . request()->avatar->getClientOriginalExtension();
-        $request->avatar->storeAs('public', $avatarName);
-
         $parameters = $request->only([
             'name', 'email', 'job_title', 'team_name', 'bio', 'country', 'skills',
         ]);
+
+        if ($request->hasFile('avatar')) {
+            $avatarName = Str::random() . '.' . $request->avatar->extension();
+            $request->avatar->storeAs('public', $avatarName);
+
+            Arr::set($parameters, 'avatar', Storage::url($avatarName));
+        }
 
         // set default values if empty
         // otherwise they will not be updated in eloquent model
         Arr::set($parameters, 'skills', Arr::get($parameters, 'skills', []));
         Arr::set($parameters, 'job_title', Arr::get($parameters, 'job_title'));
-        Arr::set($parameters, 'avatar', Storage::url($avatarName));
 
         return $parameters;
     }
