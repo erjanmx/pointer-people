@@ -12,6 +12,8 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable, SoftDeletes;
 
+    const POINTER_EMAIL_REGEXP = '^.+@pointerbp.(com|nl)$';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -19,7 +21,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $fillable = [
         'name', 'email', 'linkedin_id', 'linkedin_token', 'avatar',
-        'job_title', 'team_name', 'country', 'bio', 'skills',
+        'job_title', 'team_name', 'country', 'bio', 'skills', 'password',
     ];
 
     /**
@@ -28,7 +30,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $hidden = [
-        'linkedin_id', 'linkedin_token', 'remember_token', 'deleted_at', 'email_verified_at',
+        'linkedin_id', 'linkedin_token', 'remember_token', 'deleted_at', 'email_verified_at', 'password',
     ];
 
     /**

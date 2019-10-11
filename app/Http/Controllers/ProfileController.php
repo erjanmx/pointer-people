@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 
 class ProfileController extends Controller
 {
@@ -92,16 +92,25 @@ class ProfileController extends Controller
     {
         $request->validate([
             'bio' => 'max:120',
-            'email' => ['max:40', 'regex:/^.+@pointerbp.(com|nl)$/'],
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['max:40', 'regex:/' . User::POINTER_EMAIL_REGEXP . '/'],
             'country' => 'max:2',
             'job_title' => 'max:30',
             'team_name' => 'max:30',
             'skills' => 'array|max:5',
+            'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:4096',
         ]);
 
         $parameters = $request->only([
-            'email', 'job_title', 'team_name', 'bio', 'country', 'skills',
+            'name', 'email', 'job_title', 'team_name', 'bio', 'country', 'skills',
         ]);
+
+        if ($request->hasFile('avatar')) {
+            $avatarName = Str::random() . '.' . $request->avatar->extension();
+            $request->avatar->storeAs('public', $avatarName);
+
+            Arr::set($parameters, 'avatar', Storage::url($avatarName));
+        }
 
         // set default values if empty
         // otherwise they will not be updated in eloquent model

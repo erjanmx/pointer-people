@@ -60,12 +60,6 @@ class LoginController extends Controller
             Auth::login($user, true);
 
             $status = __('Logged in successfully');
-
-            if ($user->wasRecentlyCreated) {
-                Log::info('New user', $user->toArray());
-
-                return redirect()->route('profile')->with('status', __('Please provide your PointerBP email and some more information about yourself'));
-            }
         } catch (ClientException $exception) {
             $status = __('Login canceled');
         } catch (Exception $exception) {
@@ -84,15 +78,21 @@ class LoginController extends Controller
     {
         $remoteUser = Socialite::driver('linkedin')->stateless()->user();
 
-        /** @var User $user */
-        return User::withTrashed()->updateOrCreate([
-            'linkedin_id' => $remoteUser->getId(),
-        ], [
-            'name' => $remoteUser->getName(),
-            'linkedin_token' => $remoteUser->token,
-            'avatar' => data_get($remoteUser, 'avatar_original', $remoteUser->getAvatar()),
-        ]);
+        $user = User::query()->where('linkedin_id', $remoteUser->getId())->first();
+
+        if (is_null($user)) {
+            $user = User::query()->create([
+                'linkedin_id' => $remoteUser->getId(),
+                'linkedin_token' => $remoteUser->token,
+                'name' => $remoteUser->getName(),
+                'avatar' => data_get($remoteUser, 'avatar_original', $remoteUser->getAvatar()),
+            ]);
+            Log::info('New user', $user->toArray());
+        }
+
+        return $user;
     }
+
     /**
      * @return RedirectResponse
      * @throws Exception

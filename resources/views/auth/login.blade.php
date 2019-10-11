@@ -12,7 +12,7 @@
                         @csrf
 
                         <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Pointer E-Mail Address') }}</label>
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
@@ -60,6 +60,16 @@
                                 @if (Route::has('password.request'))
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
                                         {{ __('Forgot Your Password?') }}
+                                    </a>
+                                @endif
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group row mb-0">
+                            <div class="col-md-8 offset-md-4">
+                                @if (Route::has('login-linkedin'))
+                                    <a href="{{ route('login-linkedin') }}">
+                                        <img src="{{ asset('images/linkedin.png') }}" title="Sign in with LinkedIn" alt="Sign in with LinkedIn">
                                     </a>
                                 @endif
                             </div>
