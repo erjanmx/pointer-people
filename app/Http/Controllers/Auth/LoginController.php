@@ -85,10 +85,14 @@ class LoginController extends Controller
                 'linkedin_id' => $remoteUser->getId(),
                 'linkedin_token' => $remoteUser->token,
                 'name' => $remoteUser->getName(),
-                'avatar' => data_get($remoteUser, 'avatar_original', $remoteUser->getAvatar()),
             ]);
             Log::info('New user', $user->toArray());
         }
+
+        $user->update([
+            'avatar' => data_get($remoteUser, 'avatar_original', $remoteUser->getAvatar()),
+            'linkedin_token' => $remoteUser->token,
+        ]);
 
         return $user;
     }
