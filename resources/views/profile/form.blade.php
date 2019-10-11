@@ -80,7 +80,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="avatar" class="col-md-4 col-form-label text-md-right">{{ __('Avatar (Max 2MB)') }}</label>
+                            <label for="avatar" class="col-md-4 col-form-label text-md-right">{{ __('Avatar (Max 5MB)') }}</label>
 
                             <div class="col-md-4">
                                 <input type="file" class="form-control" name="avatar" id="avatar" style="height: 100%">

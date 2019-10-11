@@ -98,7 +98,7 @@ class ProfileController extends Controller
             'job_title' => 'max:30',
             'team_name' => 'max:30',
             'skills' => 'array|max:5',
-            'avatar' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'avatar' => 'image|mimes:jpeg,png,jpg|max:6000',
         ]);
 
         $parameters = $request->only([
