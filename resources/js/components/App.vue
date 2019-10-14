@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="search-wrapper">
-      <input type="text" v-model="searchText" placeholder="Search..."/>
+      <input type="text" v-model="searchText" placeholder="Search..." v-focus/>
       <div v-show="!loading" class="info">
         {{ filteredList.length }} / {{ peopleList.length }}
       </div>

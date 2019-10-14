@@ -1,6 +1,6 @@
 <template>
   <a class="wrap">
-    <img :alt="person.name" class="img" v-bind:src="getAvatarUrl(person)"/>
+    <img :alt="person.name" class="img" v-bind:src="person.avatar" @error="imgUrlAlt"/>
     <PersonCountry :country="person.country" />
     <div class="description-layer">
         <PersonCountry :country="person.country" />
@@ -29,12 +29,12 @@
   export default {
     props: ['person'],
     methods: {
-        getAvatarUrl: function (person) {
-            return person.avatar || 'https://api.adorable.io/avatars/285/' + person.id + '.png';
-        },
         getPersonSkills: function (person) {
             return person.skills.length ? 'Top skills: ' + person.skills.join(', ') : '';
         },
+        imgUrlAlt(event) {
+            event.target.src = "https://via.placeholder.com/250x250?text=No picture found";
+        }
     },
     filters: {
       lowercase: function (value) {
