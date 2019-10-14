@@ -88,7 +88,7 @@
 
                             <div class="col-md-2">
                                 <div class="profile-header-img">
-                                    <img class="img-thumbnail" src="{{ route('picture', $user->id) }}" />
+                                    <img class="img-thumbnail" src="{{ $user->avatar_blob ? route('picture', [$user->id, uniqid()]) : $user->avatar }}" />
                                 </div>
                             </div>
                         </div>
