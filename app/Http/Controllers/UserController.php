@@ -34,11 +34,12 @@ class UserController extends Controller
     public function picture($id)
     {
         $user = User::query()->findOrFail($id);
+        $image = $user->avatar_blob ?? $user->avatar;
 
-        if (!$user->avatar_blob) {
+        if (!$image) {
             abort(404);
         }
 
-        return Image::make($user->avatar_blob)->response();
+        return Image::make($image)->response();
     }
 }
