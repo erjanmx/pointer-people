@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Http\Resources\UsersResource;
-use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class UserController extends Controller
@@ -40,6 +40,8 @@ class UserController extends Controller
             abort(404);
         }
 
-        return Image::make($image)->response();
+        return Response::make($image, 200, ['Content-Type' => 'image'])
+            ->setMaxAge(60 * 60 * 24 * 7) // one week
+            ->setPublic();
     }
 }
