@@ -9,7 +9,7 @@
             <hr/>
             <img src="{{ asset('images/sample-page.png') }}" title="Sample UI" class="img-fluid" alt="sample ui">
             <hr/>
-            To connect, simply <a href="{{ route('login') }}">log in</a> using your LinkedIn credentials and the app will automatically create your account based on your LI profile, which you can choose to complete with additional information about yourself.
+            To connect, simply <a href="{{ route('register') }}">register</a> or <a href="{{ route('login-linkedin') }}">log in</a> using your LinkedIn credentials and the app will automatically create your account based on your LI profile, which you can choose to complete with additional information about yourself.
         </div>
     </div>
 </div>
