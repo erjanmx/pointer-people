@@ -26,5 +26,6 @@ $factory->define(User::class, function (Faker $faker) {
         'team_name' => $faker->text(30),
         'country' => $faker->countryCode,
         'bio' => $faker->text(120),
+        'email_verified_at' => now(),
     ];
 });

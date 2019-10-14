@@ -61,13 +61,4 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->email != null;
     }
-
-    public function getAvatar()
-    {
-        if ($this->avatar_blob) {
-            return 'data:image/jpeg;base64,'.base64_encode($this->avatar_blob );
-        }
-
-        return $this->avatar;
-    }
 }
