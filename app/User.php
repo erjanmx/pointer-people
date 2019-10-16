@@ -12,7 +12,7 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable, SoftDeletes;
 
-    const POINTER_EMAIL_REGEXP = '^.+@pointerbp.(com|nl)$';
+    const EMAIL_REGEXP = '/^.+@pointerbp.(com|nl)$/';
 
     /**
      * The attributes that are mass assignable.
