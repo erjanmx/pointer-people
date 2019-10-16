@@ -40,6 +40,6 @@ class ForgotPasswordController extends Controller
      */
     protected function validateEmail(Request $request)
     {
-        $request->validate(['email' => ['required', 'email', 'regex:/' . User::POINTER_EMAIL_REGEXP . '/']]);
+        $request->validate(['email' => ['required', 'email', 'regex:' . User::EMAIL_REGEXP]]);
     }
 }
