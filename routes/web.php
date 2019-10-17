@@ -26,7 +26,7 @@ Route::middleware(['fw-only-whitelisted'])->group(function () {
     Route::middleware(['with-email', 'verified'])->group(function () {
         Route::get('/', 'HomeController@index')->name('home')->middleware('auth');
         Route::get('/users', 'UserController@list');
-        Route::get('/users/{id}/picture', 'UserController@picture')->name('picture');
+        Route::get('/users/{user}/picture', 'UserController@picture')->name('picture');
     });
     Route::get('/account', 'ProfileController@showForm')->name('account');
     Route::get('/profile', 'ProfileController@showForm')->name('profile');

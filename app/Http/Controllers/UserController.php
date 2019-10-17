@@ -31,9 +31,8 @@ class UserController extends Controller
         );
     }
 
-    public function picture($id)
+    public function picture(User $user)
     {
-        $user = User::query()->findOrFail($id);
         $image = $user->avatar_blob ?? $user->avatar;
 
         if (!$image) {
