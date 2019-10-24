@@ -13,7 +13,7 @@ class HomePageTest extends TestCase
     /**
      * @return void
      */
-    public function testIndexPageReturnsOK()
+    public function testIndexPageRedirectsToIntro()
     {
         $response = $this->get('/');
 
