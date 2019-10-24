@@ -91,4 +91,18 @@ class HomePageTest extends TestCase
 
         $this->assertEmpty(User::all());
     }
+
+    /**
+     * @return void
+     */
+    public function testHomePageRedirectsToProfileIfNoEmail()
+    {
+        $user = factory(User::class)->create([
+            'email' => null,
+        ]);
+
+        $response = $this->actingAs($user)->get('/');
+
+        $response->assertRedirect('profile');
+    }
 }

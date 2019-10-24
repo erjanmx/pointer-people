@@ -17,8 +17,22 @@ class ProfilePageTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $response = $this->actingAs($user)->get(route('profile'));
+        $response = $this->actingAs($user)->get(route("profile"));
 
-        $response->assertSeeText('Delete my account');
+        $response->assertSeeText("Delete my account");
+    }
+
+    /**
+     * @return void
+     */
+    public function testProfilePageContainsEmailForm()
+    {
+        $user = factory(User::class)->create();
+
+        $response = $this->actingAs($user)->get(route("profile"));
+
+        $response->assertSee(
+            '<input class="form-control" name="email" type="text" value="' . $user->email
+        );
     }
 }
