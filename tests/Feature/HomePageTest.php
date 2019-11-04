@@ -33,16 +33,6 @@ class HomePageTest extends TestCase
     /**
      * @return void
      */
-    public function testLoginLinkRedirectsToLinkedIn()
-    {
-        $response = $this->get('/login/linkedin');
-
-        $response->assertSeeText('Redirecting to https://www.linkedin.com/oauth/');
-    }
-
-    /**
-     * @return void
-     */
     public function testAuthenticatedUserCanSeeLogoutLink()
     {
         $user = factory(User::class)->create([
