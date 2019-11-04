@@ -33,6 +33,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $hidden = [
         'linkedin_id', 'linkedin_token', 'remember_token', 'deleted_at', 'email_verified_at', 'password',
+        'avatar_blob',
     ];
 
     /**
