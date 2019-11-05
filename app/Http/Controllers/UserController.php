@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Illuminate\Http\Request;
+use App\Events\UsersListRequested;
 use App\Http\Resources\UsersResource;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -22,10 +24,13 @@ class UserController extends Controller
     /**
      * Show the list of users.
      *
+     * @param Request $request
      * @return AnonymousResourceCollection
      */
-    public function list()
+    public function list(Request $request)
     {
+        event(new UsersListRequested($request->user()->name));
+
         return UsersResource::collection(
             User::query()->verified()->orderBy('name')->get()
         );

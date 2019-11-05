@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\User;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UsersPageTest extends TestCase
@@ -51,5 +52,16 @@ class UsersPageTest extends TestCase
                 ],
             ],
         ]);
+    }
+
+    /**
+     */
+    public function testLogWhenUsersRequested()
+    {
+        $user = factory(User::class)->state('verified')->create();
+
+        Log::shouldReceive('info')->once();
+
+        $this->actingAs($user)->get('/users');
     }
 }
