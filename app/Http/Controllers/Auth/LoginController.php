@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Database\Eloquent\Builder;
@@ -40,7 +41,7 @@ class LoginController extends Controller
     /**
      * Redirect the user to the GitHub authentication page.
      *
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function redirectToProvider()
     {
@@ -76,25 +77,43 @@ class LoginController extends Controller
      */
     public function getUserWithLinkedIn()
     {
-        $remoteUser = Socialite::driver('linkedin')->stateless()->user();
+        $linkedInUser = $this->getSocialiteUserAsArray();
 
-        $user = User::query()->where('linkedin_id', $remoteUser->getId())->first();
+        /** @var User $user */
+        $user = User::query()->where('linkedin_id', $linkedInUser['id'])->first();
 
         if (is_null($user)) {
             $user = User::query()->create([
-                'linkedin_id' => $remoteUser->getId(),
-                'linkedin_token' => $remoteUser->token,
-                'name' => $remoteUser->getName(),
+                'name' => $linkedInUser['name'],
+                'linkedin_id' => $linkedInUser['id'],
+                'linkedin_token' => $linkedInUser['token'],
             ]);
-            Log::info('New user', $user->toArray());
+
+            event(new Registered($user));
         }
 
         $user->update([
-            'avatar' => data_get($remoteUser, 'avatar_original', $remoteUser->getAvatar()),
-            'linkedin_token' => $remoteUser->token,
+            'avatar' => $linkedInUser['avatar'],
+            'linkedin_token' => $linkedInUser['token'],
         ]);
 
         return $user;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSocialiteUserAsArray()
+    {
+        /** @var \Laravel\Socialite\One\User $remoteUser */
+        $remoteUser = Socialite::driver('linkedin')->stateless()->user();
+
+        return [
+            'id' => $remoteUser->getId(),
+            'name' => $remoteUser->getName(),
+            'token' => $remoteUser->token,
+            'avatar' => data_get($remoteUser, 'avatar_original', $remoteUser->getAvatar())
+        ];
     }
 
     /**
@@ -107,10 +126,8 @@ class LoginController extends Controller
 
         Auth::logout();
 
-        Log::info('User removed', $user->toArray());
-
         $user->forceDelete();
 
-        return redirect()->route('intro')->with('status', 'Your account has been removed');
+        return redirect()->route('intro')->with('status', __('Your account has been removed'));
     }
 }
