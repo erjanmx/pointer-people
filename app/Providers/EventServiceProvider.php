@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Events\UserDeleted;
+use App\Events\UsersListRequested;
 use Illuminate\Auth\Events\Login as UserLogin;
 use Illuminate\Auth\Events\Registered as UserRegistered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -25,7 +26,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         UserLogin::class => [
             \App\Listeners\UserLoggedIn::class,
-        ]
+        ],
+        UsersListRequested::class => [
+            \App\Listeners\UsersListRequested::class,
+        ],
     ];
 
     /**
