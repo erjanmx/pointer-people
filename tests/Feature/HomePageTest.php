@@ -13,7 +13,7 @@ class HomePageTest extends TestCase
     /**
      * @return void
      */
-    public function testIndexPageReturnsOK()
+    public function testIndexPageRedirectsToIntro()
     {
         $response = $this->get('/');
 
@@ -80,5 +80,19 @@ class HomePageTest extends TestCase
         $this->actingAs($user)->post(route('delete-logout'));
 
         $this->assertEmpty(User::all());
+    }
+
+    /**
+     * @return void
+     */
+    public function testHomePageRedirectsToProfileIfNoEmail()
+    {
+        $user = factory(User::class)->create([
+            'email' => null,
+        ]);
+
+        $response = $this->actingAs($user)->get('/');
+
+        $response->assertRedirect('profile');
     }
 }
