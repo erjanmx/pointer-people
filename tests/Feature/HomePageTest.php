@@ -35,9 +35,7 @@ class HomePageTest extends TestCase
      */
     public function testAuthenticatedUserCanSeeLogoutLink()
     {
-        $user = factory(User::class)->create([
-            'email_verified_at' => now(),
-        ]);
+        $user = factory(User::class)->state('verified')->create();
 
         $response = $this->actingAs($user)->get('/');
 
@@ -49,9 +47,7 @@ class HomePageTest extends TestCase
      */
     public function testAuthenticatedUserCanSeeProfileLink()
     {
-        $user = factory(User::class)->create([
-            'email_verified_at' => now(),
-        ]);
+        $user = factory(User::class)->state('verified')->create();
 
         $response = $this->actingAs($user)->get('/');
 
@@ -77,7 +73,9 @@ class HomePageTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $this->actingAs($user)->post(route('delete-logout'));
+        $response = $this->actingAs($user)->post(route('delete-logout'));
+
+        $response->assertRedirect('intro');
 
         $this->assertEmpty(User::all());
     }
@@ -87,11 +85,11 @@ class HomePageTest extends TestCase
      */
     public function testHomePageRedirectsToProfileIfNoEmail()
     {
-        $user = factory(User::class)->create([
+        $userWithoutEmail = factory(User::class)->create([
             'email' => null,
         ]);
 
-        $response = $this->actingAs($user)->get('/');
+        $response = $this->actingAs($userWithoutEmail)->get('/');
 
         $response->assertRedirect('profile');
     }
